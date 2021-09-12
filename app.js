@@ -1,7 +1,6 @@
 const express = require('express');
 const app = express();
 const authRouter = require('./routes/auth');
-const MONGO_URI = 'mongodb+srv://Robin:Robin80@householdappcluster.bw9wf.mongodb.net/HouseHoldApp?retryWrites=true&w=majority'
 const mongoose = require('mongoose');
 const allowAccessOrgin = require('./utils/allow-access-orgin');
 const authMiddleWare = require('./middleware/auth');
