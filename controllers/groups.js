@@ -290,3 +290,29 @@ exports.modifyName = async(req, res, next) => {
         next(err);
     }
 }
+
+exports.getMembers = async(req, res, next) => {
+    try{
+        const groupId = req.params.groupId;
+        const group = await Groups.findById(groupId)
+                      .populate('members');
+        if (!group) {
+            const err = new Error();
+            err.statusCode = 401;
+            err.message = 'No group exists';
+            throw err;
+        }
+        const members = group.members.map((member) => {
+            return {
+                name: member.name,
+                phone: member.phone
+            }
+        });
+        return res.status(200).json({
+            message: 'Retrieved members data',
+            members: members
+        });
+    }catch(err) {
+        next(err);
+    }
+}

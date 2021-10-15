@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const allowAccessOrgin = require('./utils/allow-access-orgin');
 const authMiddleWare = require('./middleware/auth');
 const groupRouter = require('./routes/groups');
+const transactionRouter = require('./routes/transactions');
 
 app.use(allowAccessOrgin);
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use('/auth', authRouter);
 app.use('/groups', authMiddleWare, groupRouter);
+app.use('/transactions', authMiddleWare, transactionRouter);
 
 app.use((err, req, res, next) => {
     console.log(err);
@@ -26,7 +28,7 @@ app.use((err, req, res, next) => {
     });
 })
 
-mongoose.connect(MONGO_URI, {useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
 .then((result) => {
     app.listen(3300, () => {
         console.log("Server started");

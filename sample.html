@@ -1,10 +1,20 @@
 <html>
     <head>
         <title>Sample page</title>
+        
     </head>
     <body>
         <script>
+            let worker;
             const url = 'http://localhost:3300/auth/';
+            function startCounter() {
+                if(worker === undefined) {
+                    worker = new Worker("counter.js");
+                    worker.onmessage = function(evt) {
+                        console.log(evt.data);
+                    }
+                }
+            }
             async function signUp() {
                 const email = document.querySelector('#signUpEmail').value;
                 const password = document.querySelector('#signUpPassword').value;
@@ -48,7 +58,7 @@
         <form>
             email: <input type="email" id="email">
             password: <input type="password" id="password">
-            <button type="button" onclick="login()">Login</button>
+            <button type="button" onclick="startCounter()">Count</button>
         </form>
         
     </body>

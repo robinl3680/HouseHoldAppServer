@@ -12,7 +12,7 @@ const transactionsSchema = new Schema({
         ref: 'User',
         required: true
     },
-    cost: {
+    amount: {
         type: Number,
         required: true
     },

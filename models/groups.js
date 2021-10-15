@@ -21,6 +21,12 @@ const groupSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'User'
         }
+    ],
+    transactions: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Transactions'
+        }
     ]
 });
 
