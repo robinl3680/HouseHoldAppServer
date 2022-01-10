@@ -4,11 +4,6 @@ const { validationResult } = require('express-validator/check')
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const sendgridTransport = require('nodemailer-sendgrid-transport');
-const transporter = nodemailer.createTransport(sendgridTransport({
-    auth: {
-        api_key: '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'
-    }
-}));
 const JSWT = require('jsonwebtoken');
 
 exports.postLogin = (req, res, next) => {
@@ -79,14 +74,7 @@ exports.postSignup = (req, res, next) => {
         const token = buffer.toString('hex');
         bcrypt.hash(password, 12)
         .then(hashPassword => {
-            transporter.sendMail({
-                to: email,
-                from: 'householdapp.dataanalysis@gmail.com',
-                subject: 'Verify your email',
-                html: `<h2> You are successfully signed up for the <b> House Hold Utility App </b> </h2>
-                      <p> Please click on the following link to verify your account</p>
-                      <a href="http://localhost:3300/auth/verifySignUp/${token}"> Click to verify </a>`
-            });
+           
             const newUser = new User({
                 email: email,
                 password: hashPassword,
