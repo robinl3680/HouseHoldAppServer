@@ -19,10 +19,9 @@ router.post('/login', [
                 });
         }),
     body('password')
-        .isAlphanumeric()
         .custom((value) => {
             if (value.length < 6)
-                throw new Error('Please enter a valid alphanumeric password with atleast 6 characters length');
+                throw new Error('Please enter a valid password with atleast 6 characters length');
             return true;
         })
         .trim()

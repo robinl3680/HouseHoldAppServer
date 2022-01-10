@@ -7,7 +7,10 @@ exports.newTransaction = async(req, res, next) => {
         const groupId = req.body.groupId;
         const item = req.body.item;
         const userId = req.userId;
-        const user = await User.findById(userId);
+        let user = await User.findById(userId);
+        if(user.name !== item.person) {
+            user = await User.findOne({name: item.person});
+        }
         if (!user) {
             const error = new Error();
             error.statusCode = 402;
@@ -28,7 +31,7 @@ exports.newTransaction = async(req, res, next) => {
             multiPerson: item.multiPerson,
             individualTransaction: item.individualTransaction,
             personsDistributedAmounts: item.personsDistributedAmounts,
-            owner: userId,
+            owner: user._id,
             group: groupId
         });
         group.transactions.push(transaction);
@@ -59,7 +62,7 @@ exports.getTransactions = async(req, res, next) => {
             return {
                 ...transaction._doc,
                 person: transaction.owner.name,
-                date: transaction.date.toString()
+                date: new Date(transaction.date.toString()).toLocaleDateString()
             }
         });
         return res.status(200).json({
@@ -70,6 +73,33 @@ exports.getTransactions = async(req, res, next) => {
         next(err);
     }
 }
+
+exports.modifyTransaction = async(req, res, next) => {
+    try{
+        const groupId = req.body.groupId;
+        const item = req.body.item;
+        const transactionId = req.params.id;
+        const userId = req.userId;
+        const transaction = await Transaction.findById(transactionId);
+        if(!transaction) {
+            const err = new Error();
+            err.message = 'No such transaction exist!';
+            err.statusCode = 402;
+            throw err;
+        }
+        for(let key in item) {
+            if(transaction[key] !== item[key]) {
+                transaction[key] = item[key];
+            }
+        }
+        await transaction.save();
+        return res.status(200).json({
+            message: 'Updated transaction!!'
+        });
+    }catch(err) {
+        next(err);
+    }
+};
 
 exports.deleteTransaction = async (req, res, next) => {
     try{
