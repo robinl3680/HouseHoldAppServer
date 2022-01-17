@@ -187,7 +187,10 @@ exports.joinGroup = async(req, res, next) => {
         return res.status(200).json({
             message: 'User joined group successfully'
         });
-    }catch(err) {
+    }catch(error) {
+        const err = new Error();
+        err.statusCode = 402;
+        err.message = 'No group exists';
         next(err);
     }
 };
