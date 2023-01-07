@@ -100,7 +100,8 @@ exports.postSignup = (req, res, next) => {
             return newUser.save();
         }).then(() => {
             res.status(200).json({
-                signup: 'success'
+              signup:
+                "Successfully sent mail to verify, please verify and login!",
             });
         }).catch(err => {
            next(err);
