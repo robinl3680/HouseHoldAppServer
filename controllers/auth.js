@@ -81,12 +81,12 @@ exports.postSignup = (req, res, next) => {
         .then(hashPassword => {
 
             transporter.sendMail({
-                to: email,
-                from: process.env.SOURCE_MAIL,
-                subject: 'Verify your email',
-                html: `<h2> You are successfully signed up for the <b> House Hold Utility App </b> </h2>
+              to: email,
+              from: process.env.SOURCE_MAIL,
+              subject: "Verify your email",
+              html: `<h2> You are successfully signed up for the <b> House Hold Utility App </b> </h2>
                       <p> Please click on the following link to verify your account</p>
-                      <a href="https://house-hold-app.herokuapp.com/auth/verifySignUp/${token}"> Click to verify </a>`
+                      <a href="https://householdapp-server.onrender.com/auth/verifySignUp/${token}"> Click to verify </a>`,
             });
            
             const newUser = new User({
